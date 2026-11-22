@@ -1,0 +1,506 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #090d16;
+  font-family: 'Rubik', 'Segoe UI', sans-serif;
+  color: #f8fafc;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* HUD */
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hud-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hud-right {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.stat-pill {
+  background: #0f172a;
+  border: 3px solid #334155;
+  box-shadow: 0 4px 0 #020617;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.distance-pill {
+  color: #38bdf8;
+  border-color: #0284c7;
+}
+
+.coin-pill {
+  color: #facc15;
+  border-color: #ca8a04;
+}
+
+.token-pill {
+  color: #fb923c;
+  border-color: #ea580c;
+  animation: pulseBadge 0.8s infinite alternate;
+}
+
+@keyframes pulseBadge {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+
+.hud-center {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.powerup-tag {
+  background: #0f172a;
+  border: 3px solid #38bdf8;
+  box-shadow: 0 4px 0 #020617;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+}
+
+.icon-btn {
+  pointer-events: auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 6px;
+  border: 3px solid #94a3b8;
+  box-shadow: 0 4px 0 #020617;
+  background: #1e293b;
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #020617;
+}
+
+/* Overlays & Panels */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 10, 20, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 20;
+}
+
+.panel {
+  position: relative;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border: 4px solid #475569;
+  box-shadow: 0 8px 0 #020617, inset 0 2px 0 rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 22px 24px;
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+}
+
+.panel-wide {
+  max-width: 660px;
+}
+
+.top-utility {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+.tagline {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #38bdf8;
+  margin-bottom: 8px;
+}
+
+.mini-btn {
+  background: #090d16;
+  color: #e2e8f0;
+  border: 2px solid #475569;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.mini-btn:active {
+  transform: translateY(2px);
+}
+
+.game-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 30px;
+  line-height: 1.3;
+  color: #facc15;
+  text-shadow: 0 4px 0 #b45309, 0 7px 0 #020617;
+  margin-bottom: 14px;
+}
+
+h2 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 20px;
+  line-height: 1.35;
+  color: #f8fafc;
+  text-shadow: 0 3px 0 #020617;
+  margin-bottom: 14px;
+}
+
+.subtitle {
+  color: #cbd5e1;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bank-badge {
+  display: inline-block;
+  background: #090d16;
+  border: 3px solid #eab308;
+  box-shadow: 0 3px 0 #020617;
+  color: #fef08a;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.bonus-badge {
+  background: rgba(14, 165, 233, 0.22);
+  border: 2px solid #38bdf8;
+  color: #7dd3fc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* Missions */
+.missions-box {
+  background: #090d16;
+  border: 3px solid #334155;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.missions-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.mission-reward {
+  color: #facc15;
+}
+
+.missions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mission-item {
+  background: #1e293b;
+  border: 2px solid #334155;
+  border-left: 5px solid #38bdf8;
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mission-item.done {
+  border-left-color: #22c55e;
+  background: rgba(34, 197, 94, 0.16);
+  color: #86efac;
+}
+
+.mission-progress {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+/* Buttons */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  flex: 1;
+  min-width: 140px;
+  min-height: 54px;
+  padding: 14px 18px;
+  border: 3px solid #020617;
+  border-radius: 6px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: 0 2px 0 #020617;
+}
+
+.btn:active {
+  transform: translateY(3px);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+  box-shadow: 0 5px 0 #14532d;
+}
+
+.btn-primary:active {
+  box-shadow: 0 2px 0 #14532d;
+}
+
+.btn-secondary {
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+  box-shadow: 0 5px 0 #1e3a8a;
+}
+
+.btn-secondary:active {
+  box-shadow: 0 2px 0 #1e3a8a;
+}
+
+.btn-danger {
+  background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+  box-shadow: 0 5px 0 #7f1d1d;
+}
+
+.btn-danger:active {
+  box-shadow: 0 2px 0 #7f1d1d;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.hint {
+  margin-top: 14px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+/* Shop */
+.shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.shop-card {
+  background: #090d16;
+  border: 3px solid #334155;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.shop-card.equipped {
+  border-color: #4ade80;
+}
+
+.shop-card-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.shop-card-desc {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.shop-btn {
+  min-height: 44px;
+  font-size: 11px;
+  padding: 10px;
+}
+
+/* Roulette */
+.roulette-wrapper {
+  position: relative;
+  width: 100%;
+  height: 92px;
+  background: #090d16;
+  border: 4px solid #f59e0b;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 14px 0;
+}
+
+.roulette-pointer {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ef4444;
+  font-size: 22px;
+  z-index: 5;
+  text-shadow: 0 2px 0 #020617;
+}
+
+.roulette-track {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  will-change: transform;
+}
+
+.roulette-slot {
+  flex: 0 0 124px;
+  height: 74px;
+  margin: 0 4px;
+  background: #1e293b;
+  border: 2px solid #475569;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  line-height: 1.4;
+  text-align: center;
+  padding: 4px;
+}
+
+.roulette-result {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #facc15;
+  min-height: 32px;
+  margin-bottom: 14px;
+}
+
+/* Results */
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.res-item {
+  background: #090d16;
+  border: 2px solid #334155;
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.res-item span {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #94a3b8;
+}
+
+.res-item strong {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: #38bdf8;
+}
+
+@media (max-width: 520px) {
+  .shop-grid {
+    grid-template-columns: 1fr;
+  }
+  .game-title {
+    font-size: 22px;
+  }
+  .stat-pill {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LAB ESCAPE — Jetpack Joyride Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- Внутриигровой HUD -->
+  <div id="hud" class="hidden">
+    <div class="hud-left">
+      <div class="stat-pill distance-pill"><span id="hudDistance">0</span> М</div>
+      <div class="stat-pill coin-pill">&#129689; <span id="hudCoins">0</span></div>
+      <div id="tokenIndicator" class="stat-pill token-pill hidden">&#127922; ЖЕТОН</div>
+    </div>
+    <div class="hud-center" id="activePowerups"></div>
+    <div class="hud-right">
+      <button id="soundHudBtn" class="icon-btn" type="button" title="Звук">&#128266;</button>
+      <button id="pauseBtn" class="icon-btn" type="button" title="Пауза">II</button>
+    </div>
+  </div>
+
+  <!-- Стартовый экран -->
+  <div id="startScreen" class="overlay">
+    <div class="panel">
+      <div class="top-utility">
+        <button id="soundMenuBtn" class="mini-btn" type="button">&#128266; ЗВУК: ВКЛ</button>
+      </div>
+      <div class="tagline">СЕКТОР 09 • ЛАБОРАТОРИЯ ПОБЕГА</div>
+      <h1 class="game-title">LAB ESCAPE</h1>
+      <div class="bank-badge">БАНК: &#129689; <span id="totalCoinsStart">0</span> | РЕКОРД: <span id="bestDistStart">0</span> М</div>
+      <div id="startShieldBadge" class="bonus-badge hidden">&#128737; СТАРТОВЫЙ ЩИТ АКТИВЕН</div>
+
+      <div class="missions-box">
+        <div class="missions-header">
+          <span>МИССИИ (3 АКТИВНЫХ)</span>
+          <span class="mission-reward">+150 &#129689;</span>
+        </div>
+        <div id="startMissionsList" class="missions-list"></div>
+      </div>
+
+      <div class="btn-row">
+        <button id="playBtn" class="btn btn-primary" type="button">ИГРАТЬ</button>
+        <button id="shopBtn" class="btn btn-secondary" type="button">РАНЦЫ</button>
+      </div>
+      <p class="hint">ПРОБЕЛ / ЛКМ / КАСАНИЕ — ТЯГА ВВЕРХ • ПРОБЕЛ В МЕНЮ — СТАРТ</p>
+    </div>
+  </div>
+
+  <!-- Экран Паузы -->
+  <div id="pauseScreen" class="overlay hidden">
+    <div class="panel">
+      <h2>ПАУЗА</h2>
+      <div class="missions-box">
+        <div class="missions-header"><span>АКТИВНЫЕ МИССИИ</span></div>
+        <div id="pauseMissionsList" class="missions-list"></div>
+      </div>
+      <div class="btn-row">
+        <button id="resumeBtn" class="btn btn-primary" type="button">ПРОДОЛЖИТЬ</button>
+        <button id="quitBtn" class="btn btn-danger" type="button">В МЕНЮ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Магазин ранцев -->
+  <div id="shopScreen" class="overlay hidden">
+    <div class="panel panel-wide">
+      <div class="shop-header">
+        <h2>МАГАЗИН РАНЦЕВ</h2>
+        <div class="bank-badge">&#129689; <span id="totalCoinsShop">0</span></div>
+      </div>
+      <div id="shopGrid" class="shop-grid"></div>
+      <button id="closeShopBtn" class="btn btn-secondary" type="button">НАЗАД</button>
+    </div>
+  </div>
+
+  <!-- Мини-рулетка за Жетон Удачи -->
+  <div id="rouletteScreen" class="overlay hidden">
+    <div class="panel">
+      <h2>&#127922; ЖЕТОН УДАЧИ</h2>
+      <p class="subtitle">Испытайте удачу перед завершением забега</p>
+      <div class="roulette-wrapper">
+        <div class="roulette-pointer">&#9660;</div>
+        <div id="rouletteTrack" class="roulette-track"></div>
+      </div>
+      <div id="rouletteResult" class="roulette-result">Нажмите «КРУТИТЬ» или ПРОБЕЛ</div>
+      <button id="spinBtn" class="btn btn-primary" type="button">КРУТИТЬ</button>
+    </div>
+  </div>
+
+  <!-- Экран Game Over -->
+  <div id="gameOverScreen" class="overlay hidden">
+    <div class="panel">
+      <h2>ЗАБЕГ ОКОНЧЕН</h2>
+      <div class="results-grid">
+        <div class="res-item"><span>ДИСТАНЦИЯ</span><strong id="endDistance">0 М</strong></div>
+        <div class="res-item"><span>РЕКОРД</span><strong id="endBest">0 М</strong></div>
+        <div class="res-item"><span>СОБРАНО</span><strong id="endCoins">+0</strong></div>
+        <div class="res-item"><span>В БАНКЕ</span><strong id="endTotalCoins">0</strong></div>
+      </div>
+      <div class="btn-row">
+        <button id="restartBtn" class="btn btn-primary" type="button">ЗАНОВО</button>
+        <button id="menuBtn" class="btn btn-secondary" type="button">В МЕНЮ</button>
+      </div>
+      <p class="hint">НАЖМИТЕ ПРОБЕЛ ДЛЯ БЫСТРОГО РЕСТАРТА</p>
+    </div>
+  </div>
+
+  <script src="sound.js"></script>
+  <script src="sprites.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
